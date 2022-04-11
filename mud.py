@@ -14,12 +14,12 @@ from threefive import reader
 
 class MudPie:
     """
-    Mudpie class is a multicast server
+    MudPie is a multicast server
     """
     def __init__(self, mip, mport, mttl):
-        self.mcast_ip = mip  # "235.35.3.5"
-        self.mcast_port = mport  # 3535
-        self.ttl = mttl  # b"\x1f"
+        self.mcast_ip = mip  
+        self.mcast_port = mport  
+        self.ttl = mttl  
         self.pie_size = 1316
         self.sock = self.mk_sock()
 
