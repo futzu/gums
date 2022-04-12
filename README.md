@@ -20,7 +20,10 @@ make install
 ```
 
 # Use
-* stream  multicast mpegts 
+* Supported input mpegts URIs:
+  * files  `/home/me/vid.ts`
+  * http(s) `https://futzu.com/xaa.ts`
+  * multicast `udp://@235.1.2.3:4567`
 
 ```smalltalk
 
@@ -44,10 +47,19 @@ options:
                         default 1
 
 ```
+* start mudpie
 
 ```smalltalk
-
-mudpie -i video.ts 
-
+mudpie -i video.ts
 ```
 
+* play mudpie stream with ffplay
+
+```smalltalk
+ffplay udp://@235.35.3.5:3535
+```
+* segment stream from mudpie into hls with [x9k3](https://github.com/futzu/x9k3)
+
+```smalltalk
+pypy3 x9k3.py udp://@235.35.3.5:3535
+```
