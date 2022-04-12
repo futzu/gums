@@ -161,5 +161,6 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     if args.input:
-        pie = MudPie(args.addr, args.ttl)
+        ttl = int(args.ttl).to_bytes(1,byteorder="big")
+        pie = MudPie(args.addr, ttl)
         pie.mcast(args.input)
