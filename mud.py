@@ -7,6 +7,7 @@ mudpie, Multicast Unified Daemon in Python I Explained.
 
 """
 import argparse
+import os
 import socket
 import struct
 import sys
@@ -16,7 +17,7 @@ from functools import partial
 
 class MudPie:
     """
-    Mudpie class is a multicast server
+    Mudpie class is a multicast server instance
     """
 
     def __init__(self, addr, mttl):
@@ -158,9 +159,28 @@ def parse_args():
     return parser.parse_args()
 
 
+def fork():
+    """
+    fork
+    """
+    pid = os.fork()
+    if pid > 0:
+        sys.exit(0)
+
+
+def daemonize():
+    """
+    The Steven's double fork
+    """
+    fork()
+    fork()
+
+
 if __name__ == "__main__":
+    daemonize()
     args = parse_args()
     if args.input:
-        ttl = int(args.ttl).to_bytes(1,byteorder="big")
+        ttl = int(args.ttl).to_bytes(1, byteorder="big")
         pie = MudPie(args.addr, ttl)
         pie.mcast(args.input)
+    sys.exit()
