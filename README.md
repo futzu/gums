@@ -61,5 +61,5 @@ ffplay udp://@235.35.3.5:3535
 * segment stream from mudpie into hls with [x9k3](https://github.com/futzu/x9k3)
 
 ```smalltalk
-pypy3 x9k3.py udp://@235.35.3.5:3535
+pypy3 x9k3.py -i udp://@235.35.3.5:3535
 ```
