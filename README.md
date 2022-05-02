@@ -1,33 +1,39 @@
-# mudpie
-__M__ ulticast __U__ nified __D__ aemon in __P__ ython __I__ __E__ xplained
+> __G__ rande __U__ nified __M__ ulticast __D__ aemon, 
 
-# Requires 
+
+>  __gumd__
+
+
+> Requires 
 * python3.6 +
 
-# Install
+> Install
 * make install installs the  script /usr/local/bin/mudpie
 
 ```smalltalk
 
-git clone https://github.com/futzu/mudpie
+git clone https://github.com/futzu/gumd
 
-cd mudpie
+cd gumd
 
 ### as root
 
-make install 
+install gumd.py /usr/local/bin/gumd 
 
 ```
 
 # Use
 * Supported input mpegts URIs:
-  * files  `/home/me/vid.ts`
-  * http(s) `https://futzu.com/xaa.ts`
-  * multicast `udp://@235.1.2.3:4567`
+   
+  * files  `gumd -i /home/me/vid.ts`
+  * http(s) `gumd -i https://futzu.com/xaa.ts`
+  * multicast `gumd -i udp://@235.1.2.3:4567`
+  
+  * reading from stdin `cat myvideo.ts | gumd`
 
 ```smalltalk
 
-usage: mudpie [-h] [-i INPUT] [-a ADDR] [-t TTL]
+usage: gumd [-h] [-i INPUT] [-a ADDR] [-t TTL]
 
 options:
   -h, --help            show this help message and exit
@@ -36,7 +42,7 @@ options:
                         like "/home/a/vid.ts" 
                         or "https://futzu.com/xaa.ts"
                         
-                        default: None
+                        default: sys.stdin.buffer
                         
   -a ADDR, --addr ADDR  multicast stream address like "235.35.3.5:3535"
         
@@ -47,18 +53,18 @@ options:
                         default 1
 
 ```
-* start mudpie
+* start gumd
 
 ```smalltalk
-mudpie -i video.ts
+gumd -i video.ts
 ```
 
-* play mudpie stream with ffplay
+* play gumd stream with ffplay
 
 ```smalltalk
 ffplay udp://@235.35.3.5:3535
 ```
-* segment stream from mudpie into hls with [x9k3](https://github.com/futzu/x9k3)
+* segment stream from gumd into hls with [x9k3](https://github.com/futzu/x9k3)
 
 ```smalltalk
 pypy3 x9k3.py -i udp://@235.35.3.5:3535
