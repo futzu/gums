@@ -18,7 +18,6 @@ cd gumd
 install gumd.py /usr/local/bin/gumd 
 
 ```
-![image](https://user-images.githubusercontent.com/52701496/166299701-72ee908a-5053-45fc-a716-4b8ca4b1ef32.png)
 
 * __Use__
    * Supported input mpegts URIs:
@@ -57,6 +56,7 @@ options:
 gumd -i video.ts
 ```
 
+
    * play gumd stream with ffplay
 
 ```smalltalk
@@ -67,3 +67,4 @@ ffplay udp://@235.35.3.5:3535
 ```smalltalk
 pypy3 x9k3.py -i udp://@235.35.3.5:3535
 ```
+![image](https://user-images.githubusercontent.com/52701496/166299701-72ee908a-5053-45fc-a716-4b8ca4b1ef32.png)
