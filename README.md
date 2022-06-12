@@ -20,6 +20,7 @@ install gumd.py /usr/local/bin/gumd
 ```
 
 * __Use__
+
    * Supported input mpegts URIs:
    
       * files  `gumd -i /home/me/vid.ts`
@@ -66,5 +67,17 @@ ffplay udp://@235.35.3.5:3535
 
 ```smalltalk
 pypy3 x9k3.py -i udp://@235.35.3.5:3535
+```
+  * On Linux, this is how I set up for receiving a multicast stream.
+```
+## <dev> is the network device
+
+ip link set <dev> multicast on allmulticast on
+
+ethtool  -G <dev> rx 4096
+
+sysctl -w net.core.rmem_default=50000000
+
+sysctl -w net.core.rmem_max=150000000
 ```
 ![image](https://user-images.githubusercontent.com/52701496/166299701-72ee908a-5053-45fc-a716-4b8ca4b1ef32.png)
