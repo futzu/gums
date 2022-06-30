@@ -1,4 +1,15 @@
-> __G__ rande __U__ nified __M__ ulticast __D__ aemon, 
+## `G`rande `U`nified `M` ulticast `D` aemon, 
+
+
+---
+> "I 've been googling for some time now, and still have yet to find a working example of Python multicast listening....."
+> said most of the World's Citizens.
+
+
+> Until gumd. 
+## Boom goes the Multicast Dynamite Folk. 
+
+---
 
 
 
