@@ -2,12 +2,11 @@
 
 
 ---
-> "I 've been googling for some time now, and still have yet to find a working example of Python multicast listening....."
-> said most of the World's Citizens.
+` " I've been googling for some time now, and still have yet to find a working example of Python multicast..."`
 
 
-> Until gumd. 
-## Boom goes the Multicast Dynamite Folk. 
+ > Is what your mom and your sister used to say, before gumd.
+
 
 ---
 
