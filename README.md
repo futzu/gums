@@ -14,6 +14,7 @@
 
 *  __Requires__ 
     * python3.6 +
+    * [new_reader](https://github.com/futzu/new_reader)
 
 * __Install__
 
