@@ -2,31 +2,19 @@
 
 
 ---
-` " I've been googling for some time now, and still have yet to find a working example of Python multicast..."`
+` " I've been googling for some time now, and still have yet to find a working example of Python multicast"`
 
-
- > Is what your mom and your sister used to say, before gumd.
+~ said everyone before gumd
 
 
 ---
-
-
-
-*  __Requires__ 
-    * python3.6 +
-    * [new_reader](https://github.com/futzu/new_reader)
+![image](https://user-images.githubusercontent.com/52701496/186205046-3577218f-e0e1-4e17-aca5-f2a8c9f3737f.png)
 
 * __Install__
 
 ```smalltalk
 
-git clone https://github.com/futzu/gumd
-
-cd gumd
-
-### as root
-
-install gumd.py /usr/local/bin/gumd 
+python3 -mpip install gumd
 
 ```
 
@@ -41,25 +29,22 @@ install gumd.py /usr/local/bin/gumd
       * reading from stdin `cat myvideo.ts | gumd`
 
 ```smalltalk
-
-usage: gumd [-h] [-i INPUT] [-a ADDR] [-t TTL]
+usage: gumd [-h] [-i INPUT] [-a ADDR] [-t TTL] [-v]
 
 options:
-  -h, --help            show this help message and exit
-  
-  -i INPUT, --input INPUT
-                        like "/home/a/vid.ts" 
-                        or "https://futzu.com/xaa.ts"
-                        
-                        default: sys.stdin.buffer
-                        
-  -a ADDR, --addr ADDR  multicast stream address like "235.35.3.5:3535"
-        
-                        default "235.35.3.5:3535"
-  
-  -t TTL, --ttl TTL     ttl value for stream, range 1 - 255
-  
-                        default 1
+
+-h, --help            show this help message and exit
+
+-i INPUT, --input INPUT
+                        like "/home/a/vid.ts" or
+                        "udp://@235.35.3.5:3535" or
+                        "https://futzu.com/xaa.ts"
+
+-a ADDR, --addr ADDR  like "227.1.3.10:4310"
+
+-t TTL, --ttl TTL     1 - 255
+
+-v, --version         Show version
 
 ```
    * start gumd
