@@ -1,7 +1,9 @@
-[project super kabuki](https://github.com/futzu/threefive/blob/master/superkabuki.md)
+[project super kabuki](https://github.com/futzu/superkabuki) SCTE-35 Packet Injection
 
 ## `G`rande `U`nified `M` ulticast `D` aemon, 
 
+# &
+## `G`rande `U`nified `M` ulticast `C` lient, 
 
 ---
 ` " I've been googling for some time now, and still have yet to find a working example of Python multicast"`
