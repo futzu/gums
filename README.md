@@ -21,9 +21,7 @@
 python3 -mpip install gumd
 
 ```
- The cli tools __gumd and gumc__ try to install to /usr/local/bin.
 
- if you dont get them installed, clone the repo and copy them from the bin directory to wherever you like.
 
 ### Use gumd (Daemon) programatically
 ```py3
@@ -43,7 +41,10 @@ b'Helloooo'
 
 ```
 ## Cli tools
-#### Roll your own cli tools
+ The cli tools __gumd and gumc__ try to install to /usr/local/bin.
+
+ if you dont get them installed, roll your own.
+ 
 * gumd (Daemon)
 
   ```lua
