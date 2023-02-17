@@ -22,7 +22,7 @@ python3 -mpip install gumd
 
 ```
 
-### Use gumd (Daemon) programatically
+### Use gumd (Daemon) programmatically
 ```py3
 >>>> from gumd import GumD
 >>>> gumd =GumD('235.35.3.5:3535',1)
@@ -30,7 +30,7 @@ python3 -mpip install gumd
 stream uri: udp://@235.35.3.5:3535
 >>>>
 ```
-### Use gumc (Client) programatically
+### Use gumc (Client) programmatically
 ```py3
 >>>> from gumc import GumC
 >>>> gumc = GumC("udp://@235.35.3.5:3535")
