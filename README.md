@@ -11,8 +11,8 @@
 
 ~ said everyone before gumd
 
-
 ---
+### Latest is `v.0.0.9`
 
 * __Install__
 
@@ -21,7 +21,6 @@
 python3 -mpip install gumd
 
 ```
-
 
 ### Use gumd (Daemon) programatically
 ```py3
@@ -117,7 +116,16 @@ options:
 a@debian:~/build/clean/gumd$ gumc -i udp://@235.35.3.5:3535 -b 1024
 
 ```
-
+### Test gumd and gumc together
+* first terminal, start the client, __gumc__
+```lua
+a@debian:~/build/clean/gumd$ pypy3 gumc.py -b 5 -i udp://@235.35.3.5:3535
+```
+* second terminal,start the daemon, gumd__ and send a "hello"
+```lua
+a@debian:~/build/clean/gumd$ printf 'hello' | gumd -a 235.35.3.5:3535
+stream uri: udp://@235.35.3.5:3535
+```
 ### play gumd (Daemon) stream with ffplay
 
 ```smalltalk
