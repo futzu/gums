@@ -16,7 +16,7 @@ from new_reader import reader
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "7"
+MAINTAINENCE = "9"
 
 
 def version():
@@ -107,7 +107,8 @@ def cli():
     """
     args = parse_args()
     if args.version:
-        version()
+        print(version())
+        sys.exit()
     gumc =GumC(args.instuff)
     print(gumc.read(args.bytesize))
 
