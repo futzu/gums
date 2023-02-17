@@ -21,16 +21,60 @@
 python3 -mpip install gumd
 
 ```
-* The cli tools __gumc and gumd__ try to install to /usr/local/bin, if you dont get them installed, clone the repo and copy them from the bin directory to wherever you like.
+ The cli tools __gumd and gumc__ try to install to /usr/local/bin.
 
-* __Use__
+ if you dont get them installed, clone the repo and copy them from the bin directory to wherever you like.
+
+### Use gumd (Daemon) programatically
+```py3
+>>>> from gumd import GumD
+>>>> gumd =GumD('235.35.3.5:3535',1)
+>>>> gumd.mcast("/home/a/stuff")
+stream uri: udp://@235.35.3.5:3535
+>>>>
+```
+### Use gumc (Client) programatically
+```py3
+>>>> from gumc import GumC
+>>>> gumc = GumC("udp://@235.35.3.5:3535")
+>>>> data = gumc.read(8)
+>>>> data
+b'Helloooo'
+
+```
+## Cli tools
+#### Roll your own cli tools
+* gumd (Daemon)
+
+  ```lua
+
+   #!/usr/bin/env python3
+
+   from gumd import cli 
+
+   cli()
+
+```
+* gumc (Client)
+
+```lua
+  #!/usr/bin/env python3
+
+  from gumc import cli 
+
+  cli()
+
+
+```
+
+
+#### __Use gumd (Daemon) cli__
 
    * Supported input mpegts URIs:
    
       * files  `gumd -i /home/me/vid.ts`
       * http(s) `gumd -i https://futzu.com/xaa.ts`
       * multicast `gumd -i udp://@235.1.2.3:4567`
-  
       * reading from stdin `cat myvideo.ts | gumd`
 
 ```smalltalk
@@ -44,56 +88,56 @@ options:
                         like "/home/a/vid.ts" or
                         "udp://@235.35.3.5:3535" or
                         "https://futzu.com/xaa.ts"
-
 -a ADDR, --addr ADDR  like "227.1.3.10:4310"
-
 -t TTL, --ttl TTL     1 - 255
-
 -v, --version         Show version
-
 ```
-   * start gumd
-
+#### __start gumd (Daemon) cli__
 ```smalltalk
-gumd -i video.ts
+a@debian:~/gumd$ gumd -i /home/a/abc.py 
+stream uri: udp://@235.35.3.5:3535
+a@debian:~/gumd$ 
 ```
+#### __use gumc (Client) cli__
+```lua
+usage: gumc [-h] [-i INSTUFF] [-b BYTESIZE] [-v]
 
-
-   * play gumd stream with ffplay
-
-```smalltalk
-ffplay udp://@235.35.3.5:3535
-```
-   * segment stream from gumd into hls with [x9k3](https://github.com/futzu/x9k3)
-
-```smalltalk
-pypy3 x9k3.py -i udp://@235.35.3.5:3535
-```
- 
- ## gumc The client
- ```js
- a@stream:~$ gumc -h
-usage: gumc [-h] [-i INSTUFF] [-b BYTESIZE] 
-
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -i INSTUFF, --instuff INSTUFF
                         default is 'udp://@235.35.3.5:3535'
   -b BYTESIZE, --bytesize BYTESIZE
                         Number of bytes to read. default is 1
+  -v, --version         Show version
+```
 
- ```
+### start gumc (Client) cli
+```lua
+a@debian:~/build/clean/gumd$ gumc -i udp://@235.35.3.5:3535 -b 1024
 
- * read 13 bytes from a multicast stream
+```
+
+### play gumd (Daemon) stream with ffplay
+
+```smalltalk
+ffplay udp://@235.35.3.5:3535
+```
+### segment stream from gumd  (Daemon) into hls with [x9k3](https://github.com/futzu/x9k3)
+
+```smalltalk
+pypy3 x9k3.py -i udp://@235.35.3.5:3535
+```
+ 
+### read 13 bytes from a multicast stream with gumc (Client)
  ```lua
  gumc -i udp://@235.35.3.5:3535 -b 13
  ```
- * read 10000 bytes from a multicast stream
+### read 10000 bytes from a multicast stream with gumc (Client)
  ```lua
   gumc -i udp://@235.35.3.5:3535 -b 13
 ```
- #### Note: a multicast client works a little differently than most people expect.
- #### You must specify a size to read or the client will never return.
-  
- 
+#### Note: a multicast client works a little differently than most people expect.
+#### You must specify a size to read or the client will never return.
+
+
 ![image](https://user-images.githubusercontent.com/52701496/166299701-72ee908a-5053-45fc-a716-4b8ca4b1ef32.png)
