@@ -18,7 +18,7 @@ from new_reader import reader
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "5"
+MAINTAINENCE = "7"
 
 
 def version():
