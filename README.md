@@ -45,18 +45,18 @@ b'Helloooo'
 
  if you dont get them installed, roll your own.
  
-* gumd (Daemon)
+* __gumd__ _(Daemon)_
 
-  ```lua
+ ```lua
 
    #!/usr/bin/env python3
 
    from gumd import cli 
 
    cli()
-
 ```
-* gumc (Client)
+
+* __gumc__ _(Client)_
 
 ```lua
   #!/usr/bin/env python3
