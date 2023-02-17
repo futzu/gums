@@ -9,9 +9,7 @@ gumd, Grande Unified Multicast Daemon
 import argparse
 import os
 import socket
-import struct
 import sys
-import urllib.request
 from functools import partial
 from new_reader import reader
 
