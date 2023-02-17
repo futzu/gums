@@ -40,8 +40,12 @@ b'Helloooo'
 
 ```
 ## Cli tools
- The cli tools __gumd and gumc__ try to install to /usr/local/bin.
-
+* The cli tools __gumd and gumc__ try to install to ~/.local/bin
+* make sure ~/.local/bin is in your path I have this at the end my .bashrc 
+```sh
+PLAN9=/home/a/plan9port export PLAN9
+PATH=/home/a/.local/bin:$PLAN9:$PATH export PATH
+```
  if you dont get them installed, roll your own.
  
 * __gumd__ _(Daemon)_
@@ -66,8 +70,14 @@ b'Helloooo'
 
 
 ```
+#### Install cli tools
+```
+
+install gumd /usr/local/bin  # or ~/.local/bin
+install gumc /usr/local/bin  # or ~/.local/bin
 
 
+```
 #### __Use gumd (Daemon) cli__
 
    * Supported input mpegts URIs:
