@@ -18,7 +18,7 @@ from new_reader import reader
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "7"
+MAINTAINENCE = "9"
 
 
 def version():
@@ -71,7 +71,6 @@ class GumD:
         print(f"stream uri: udp://@{self.mcast_ip}:{self.mcast_port}")
         self.vid2mstream(vid)
         self.sock.close()
-        sys.exit()
 
 
 def parse_args():
@@ -156,8 +155,7 @@ def cli():
         print(version())
         sys.exit()
     daemonize()
-    ttl = int(args.ttl).to_bytes(1, byteorder="big")
-    gummie = GumD(args.addr, ttl)
+    gummie = GumD(args.addr, args.ttl)
     gummie.mcast(args.input)
     sys.exit()
 
