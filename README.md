@@ -3,6 +3,7 @@
 ## `G`rande `U`nified `M` ulticast `D` aemon, 
 
 # &
+
 ## `G`rande `U`nified `M` ulticast `C` lient, 
 
 ---
@@ -12,7 +13,6 @@
 
 
 ---
-![image](https://user-images.githubusercontent.com/52701496/186205046-3577218f-e0e1-4e17-aca5-f2a8c9f3737f.png)
 
 * __Install__
 
@@ -21,6 +21,7 @@
 python3 -mpip install gumd
 
 ```
+* The cli tools __gumc and gumd__ try to install to /usr/local/bin, if you dont get them installed, clone the repo and copy them from the bin directory to wherever you like.
 
 * __Use__
 
@@ -68,5 +69,31 @@ ffplay udp://@235.35.3.5:3535
 ```smalltalk
 pypy3 x9k3.py -i udp://@235.35.3.5:3535
 ```
+ 
+ ## gumc The client
+ ```js
+ a@stream:~$ gumc -h
+usage: gumc [-h] [-i INSTUFF] [-b BYTESIZE] 
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INSTUFF, --instuff INSTUFF
+                        default is 'udp://@235.35.3.5:3535'
+  -b BYTESIZE, --bytesize BYTESIZE
+                        Number of bytes to read. default is 1
+
+ ```
+
+ * read 13 bytes from a multicast stream
+ ```lua
+ gumc -i udp://@235.35.3.5:3535 -b 13
+ ```
+ * read 10000 bytes from a multicast stream
+ ```lua
+  gumc -i udp://@235.35.3.5:3535 -b 13
+```
+ #### Note: a multicast client works a little differently than most people expect.
+ #### You must specify a size to read or the client will never return.
+  
  
 ![image](https://user-images.githubusercontent.com/52701496/166299701-72ee908a-5053-45fc-a716-4b8ca4b1ef32.png)
