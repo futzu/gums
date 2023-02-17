@@ -16,10 +16,10 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/futzu/gumd",
     install_requires=[
-        "new_reader",
+        "new_reader >=0.1.07",
     ],
-    py_modules=["gumd"],
-    scripts=['bin/gumd'],
+    py_modules=["gumd","gumc"],
+    scripts=['bin/gumd', 'bin/gumc'],
     platforms="all",
     classifiers=[
         "License :: OSI Approved :: MIT License",
