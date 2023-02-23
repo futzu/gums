@@ -157,6 +157,17 @@ pypy3 x9k3.py -i udp://@235.35.3.5:3535
 ```
 #### Note: a multicast client works a little differently than most people expect.
 #### You must specify a size to read or the client will never return.
+___
 
+
+<details> <summary><h2> I have declared war against PEP tyranny.</h2> </summary>
+
+* Phase One: Expose the Pep Deep State.
+  * [Phase One has begun](https://github.com/python/peps/compare/main...futzu:peps:main)
+  
+</details>
+
+
+___
 
 ![image](https://user-images.githubusercontent.com/52701496/166299701-72ee908a-5053-45fc-a716-4b8ca4b1ef32.png)
