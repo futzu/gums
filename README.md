@@ -173,9 +173,10 @@ pypy3 x9k3.py -i udp://@235.35.3.5:3535
 ___
 
 
-<details> <summary><h2> I have declared war against PEP tyranny.</h2> </summary>
+<details> <summary><h2> .</h2> </summary>
 
-* Phase One: Expose the Pep Deep State.
+ Phase One: Expose the Pep Deep State
+</h2> </summary>
   * [Phase One has begun](https://github.com/python/peps/compare/main...futzu:peps:main)
   
 </details>
