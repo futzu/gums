@@ -166,7 +166,7 @@ pypy3 x9k3.py -i udp://@235.35.3.5:3535
  ```
 ### read 10000 bytes from a multicast stream with gumc (Client)
  ```lua
-  gumc -i udp://@235.35.3.5:3535 -b 13
+  gumc -i udp://@235.35.3.5:3535 -b 10000
 ```
 #### Note: a multicast client works a little differently than most people expect.
 #### You must specify a size to read or the client will never return.
