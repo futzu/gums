@@ -1,30 +1,13 @@
-<details> <summary>Phase One: Expose the Pep Deep State. </h4> 
-</summary>
+<I> "I've been googling for some time now, and still have yet to find a working example of Python multicast"</I>
 
-  * [Phase One has begun](https://github.com/python/peps/compare/main...futzu:peps:main)
-  * [PEP 668.... boo hiss! *(throws a tomato)*](https://peps.python.org/pep-0668/)
-     * Pep 668 inhibits installing packages with pip and pypy3.9,  at least on Debian. 
-     * Quick fix *(notice the use of unlink for dramatic effect)*
-   ```js
-   
-   root@debian:~# unlink /usr/lib/pypy3.9/EXTERNALLY-MANAGED
-   
-   ```
-</details>
-
-
-## `G`rande `U`nified `M` ulticast `D` aemon, 
-
-# &
-
-## `G`rande `U`nified `M` ulticast `C` lient, 
+#  Behold gumd.
 
 ---
-` " I've been googling for some time now, and still have yet to find a working example of Python multicast"`
+## `G`<I>rande</I> `U`<I>nified</I> `M` <I>ulticast</I> `D` <I>aemon</I> 
 
-~ said everyone before gumd
 
 ---
+
 ### Latest is `v.0.0.9`
 
 * __Install__
@@ -95,10 +78,16 @@ install gumc /usr/local/bin  # or ~/.local/bin
 
    * Supported input mpegts URIs:
    
-      * files  `gumd -i /home/me/vid.ts`
-      * http(s) `gumd -i https://futzu.com/xaa.ts`
-      * multicast `gumd -i udp://@235.1.2.3:4567`
-      * reading from stdin `cat myvideo.ts | gumd`
+     
+     * files  `gumd -i /home/me/vid.ts`
+     
+     * http(s) `gumd -i https://futzu.com/xaa.ts`
+     
+     * udp `gumd -i udp://127.0.0.1:4000`
+
+     * multicast `gumd -i udp://@235.1.2.3:4567`
+     
+     * reading from stdin `cat myvideo.ts | gumd`
 
 ```smalltalk
 usage: gumd [-h] [-i INPUT] [-a ADDR] [-t TTL] [-v]
