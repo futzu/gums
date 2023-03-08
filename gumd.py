@@ -16,7 +16,7 @@ from new_reader import reader
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "9"
+MAINTAINENCE = "11"
 
 
 def version():
@@ -40,8 +40,9 @@ class GumD:
     GumD class is a multicast server instance
     """
 
-    def __init__(self, addr, mttl):
+    def __init__(self, addr, mttl,nethost):
         self.mcast_ip, self.mcast_port = addr.rsplit(":", 1)
+        self.nethost=nethost
         self.ttl = mttl
         self.pack_size = 1316
         self.sock = self.mk_sock()
@@ -52,6 +53,7 @@ class GumD:
         """
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.ttl)
+        sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_IF, socket.inet_aton(self.nethost))
         return sock
 
     def vid2mstream(self, vid):
@@ -66,7 +68,7 @@ class GumD:
         """
         mcast streams each item on command line
         """
-        print(f"stream uri: udp://@{self.mcast_ip}:{self.mcast_port}")
+        print(f"stream uri: udp://@{self.mcast_ip}:{self.mcast_port} on host:{self.nethost}")
         self.vid2mstream(vid)
         self.sock.close()
 
@@ -89,6 +91,11 @@ def parse_args():
 
     parser.add_argument(
         "-a", "--addr", default="235.35.3.5:3535", help='like "227.1.3.10:4310"'
+    )
+
+    parser.add_argument(
+        "-n", "--nethost", default="0.0.0.0",
+        help='host ip like "127.0.0.1" or "192.168.1.34". Default is "0.0.0.0" (all interfaces)'
     )
 
     parser.add_argument(
@@ -153,7 +160,7 @@ def cli():
         print(version())
         sys.exit()
     daemonize()
-    gummie = GumD(args.addr, args.ttl)
+    gummie = GumD(args.addr, args.ttl,args.nethost)
     gummie.mcast(args.input)
     sys.exit()
 
