@@ -16,7 +16,7 @@ from new_reader import reader
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "11"
+MAINTAINENCE = "12"
 
 
 def version():
@@ -54,6 +54,8 @@ class GumD:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.ttl)
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_IF, socket.inet_aton(self.nethost))
+        if self.nethost != '0.0.0.0':
+            sock.setsockopt(socket.SOL_IP, socket.IP_ADD_MEMBERSHIP, socket.inet_aton(self.mcast_ip) + socket.inet_aton(self.nethost))
         return sock
 
     def vid2mstream(self, vid):
@@ -160,7 +162,8 @@ def cli():
         print(version())
         sys.exit()
     daemonize()
-    gummie = GumD(args.addr, args.ttl,args.nethost)
+    ttl = int(args.ttl).to_bytes(1, byteorder="big")
+    gummie = GumD(args.addr,ttl, args.nethost)
     gummie.mcast(args.input)
     sys.exit()
 
