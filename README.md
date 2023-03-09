@@ -24,7 +24,8 @@ python3 -mpip install gumd
 ### Use gumd (Daemon) programmatically
 ```py3
 >>>> from gumd import GumD
->>>> gumd =GumD('235.35.3.5:3535',1)
+>>>> nethost = "1.2.3.4"         # local ip addr to use
+>>>> gumd =GumD('235.35.3.5:3535', nethost,1)
 >>>> gumd.mcast("/home/a/stuff")
 stream uri: udp://@235.35.3.5:3535
 >>>>
@@ -95,17 +96,17 @@ install gumc /usr/local/bin  # or ~/.local/bin
 ```smalltalk
 usage: gumd [-h] [-i INPUT] [-a ADDR] [-t TTL] [-v]
 
-options:
-
--h, --help            show this help message and exit
-
--i INPUT, --input INPUT
-                        like "/home/a/vid.ts" or
-                        "udp://@235.35.3.5:3535" or
-                        "https://futzu.com/xaa.ts"
--a ADDR, --addr ADDR  like "227.1.3.10:4310"
--t TTL, --ttl TTL     1 - 255
--v, --version         Show version
+    optional arguments:
+      -h, --help            show this help message and exit
+      -i INPUT, --input INPUT
+                            like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or
+                            "https://futzu.com/xaa.ts"
+      -a ADDR, --addr ADDR  like "227.1.3.10:4310"
+      -n NETHOST, --nethost NETHOST
+                            host ip like "127.0.0.1" or "192.168.1.34". Default is
+                            "0.0.0.0" (use default interface)
+      -t TTL, --ttl TTL     1 - 255
+      -v, --version         Show version
 ```
 #### __start gumd (Daemon) cli__
 ```smalltalk
