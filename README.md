@@ -25,7 +25,7 @@ python3 -mpip install gumd
 ```py3
 >>>> from gumd import GumD
 >>>> nethost = "1.2.3.4"         # local ip addr to use
->>>> gumd =GumD('235.35.3.5:3535', nethost,1)
+>>>> gumd =GumD('235.35.3.5:3535',1, nethost)
 >>>> gumd.mcast("/home/a/stuff")
 stream uri: udp://@235.35.3.5:3535
 >>>>
