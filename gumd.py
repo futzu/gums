@@ -16,7 +16,7 @@ from new_reader import reader
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "12"
+MAINTAINENCE = "13"
 
 
 def version():
@@ -34,15 +34,14 @@ def version():
     return f"{MAJOR}.{MINOR}.{MAINTAINENCE}"
 
 
-
 class GumD:
     """
     GumD class is a multicast server instance
     """
 
-    def __init__(self, addr, mttl,nethost):
+    def __init__(self, addr, mttl, nethost):
         self.mcast_ip, self.mcast_port = addr.rsplit(":", 1)
-        self.nethost=nethost
+        self.nethost = nethost
         self.ttl = mttl
         self.pack_size = 1316
         self.sock = self.mk_sock()
@@ -53,9 +52,11 @@ class GumD:
         """
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.ttl)
-        sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_IF, socket.inet_aton(self.nethost))
-        if self.nethost != '0.0.0.0':
-            sock.setsockopt(socket.SOL_IP, socket.IP_ADD_MEMBERSHIP, socket.inet_aton(self.mcast_ip) + socket.inet_aton(self.nethost))
+        sock.setsockopt(
+            socket.IPPROTO_IP, socket.IP_MULTICAST_IF, socket.inet_aton(self.nethost)
+        )
+        grp = socket.inet_aton(self.mcast_ip) + socket.inet_aton(self.nethost)
+        sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, grp)
         return sock
 
     def vid2mstream(self, vid):
@@ -70,7 +71,9 @@ class GumD:
         """
         mcast streams each item on command line
         """
-        print(f"stream uri: udp://@{self.mcast_ip}:{self.mcast_port} on host:{self.nethost}")
+        print(
+            f"stream uri: udp://@{self.mcast_ip}:{self.mcast_port} on host:{self.nethost}"
+        )
         self.vid2mstream(vid)
         self.sock.close()
 
@@ -96,8 +99,10 @@ def parse_args():
     )
 
     parser.add_argument(
-        "-n", "--nethost", default="0.0.0.0",
-        help='host ip like "127.0.0.1" or "192.168.1.34". Default is "0.0.0.0" (all interfaces)'
+        "-n",
+        "--nethost",
+        default="0.0.0.0",
+        help='host ip like "127.0.0.1" or "192.168.1.34". Default is "0.0.0.0" (use default interface)',
     )
 
     parser.add_argument(
@@ -108,12 +113,12 @@ def parse_args():
     )
 
     parser.add_argument(
-     "-v",
-     "--version",
-     action="store_const",
-     default=False,
-     const=True,
-     help="Show version",
+        "-v",
+        "--version",
+        action="store_const",
+        default=False,
+        const=True,
+        help="Show version",
     )
 
     return parser.parse_args()
@@ -135,27 +140,27 @@ def daemonize():
     fork()
     fork()
 
+
 def cli():
     """
-    cli  makes a fully functional command line tool
+    usage: gumd.py [-h] [-i INPUT] [-a ADDR] [-n NETHOST] [-t TTL] [-v]
 
-    usage: gumd [-h] [-i INPUT] [-a ADDR] [-t TTL] [-v]
-
-    options:
-
+    optional arguments:
       -h, --help            show this help message and exit
 
       -i INPUT, --input INPUT
-                            like "/home/a/vid.ts" or
-                            "udp://@235.35.3.5:3535" or
+                            like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or
                             "https://futzu.com/xaa.ts"
 
       -a ADDR, --addr ADDR  like "227.1.3.10:4310"
 
+      -n NETHOST, --nethost NETHOST
+                            host ip like "127.0.0.1" or "192.168.1.34". Default is
+                            "0.0.0.0" (use default interface)
+      
       -t TTL, --ttl TTL     1 - 255
-
+      
       -v, --version         Show version
-
     """
     args = parse_args()
     if args.version:
@@ -163,7 +168,7 @@ def cli():
         sys.exit()
     daemonize()
     ttl = int(args.ttl).to_bytes(1, byteorder="big")
-    gummie = GumD(args.addr,ttl, args.nethost)
+    gummie = GumD(args.addr, ttl, args.nethost)
     gummie.mcast(args.input)
     sys.exit()
 
