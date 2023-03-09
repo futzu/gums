@@ -3,7 +3,7 @@
 #  Behold gumd.
 
 ---
-## `G`<I>rande</I> `U`<I>nified</I> `M` <I>ulticast</I> `D` <I>aemon</I> 
+## `G`<I>rande</I> `U`<I>nicast</I> `M` <I>ulticast</I> `D` <I>aemon</I> 
 
 
 ---
