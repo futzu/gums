@@ -55,8 +55,6 @@ class GumD:
         sock.setsockopt(
             socket.IPPROTO_IP, socket.IP_MULTICAST_IF, socket.inet_aton(self.nethost)
         )
-        grp = socket.inet_aton(self.mcast_ip) + socket.inet_aton(self.nethost)
-        sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, grp)
         return sock
 
     def vid2mstream(self, vid):
@@ -102,7 +100,7 @@ def parse_args():
         "-n",
         "--nethost",
         default="0.0.0.0",
-        help='host ip like "127.0.0.1" or "192.168.1.34". Default is "0.0.0.0" (use default interface)',
+        help='host ip like "127.0.0.1" or "192.168.1.34". Default is "0.0.0.0" (use default interface',
     )
 
     parser.add_argument(
@@ -157,9 +155,7 @@ def cli():
       -n NETHOST, --nethost NETHOST
                             host ip like "127.0.0.1" or "192.168.1.34". Default is
                             "0.0.0.0" (use default interface)
-      
       -t TTL, --ttl TTL     1 - 255
-      
       -v, --version         Show version
     """
     args = parse_args()
