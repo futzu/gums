@@ -39,7 +39,7 @@ class GumD:
     GumD class is a multicast server instance
     """
 
-    def __init__(self, addr, mttl, nethost):
+    def __init__(self, addr, mttl, nethost="0.0.0.0"):
         self.mcast_ip, self.mcast_port = addr.rsplit(":", 1)
         self.nethost = nethost
         self.ttl = mttl
