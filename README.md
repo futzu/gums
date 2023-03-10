@@ -10,7 +10,6 @@
 
 ### Latest is `v.0.0.17`
 
-![image](https://user-images.githubusercontent.com/52701496/223828007-7d5e0bbc-7a21-400a-8ea8-5eff9620bc5a.png)
 
 
 * __Install__
