@@ -2,7 +2,7 @@
 
 """
 
-gumd, Grande Unified Multicast Daemon
+gumd, Grande Unicast Multicast Daemon
 
 
 """
@@ -13,23 +13,17 @@ import sys
 from functools import partial
 from new_reader import reader
 
-DEFAULT_MCAST = "235.35.3.5:3535"
+DEFAULT_MULTICAST = "235.35.3.5:3535"
+DEFAULT_UNICAST = "127.0.0.1:9999"
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "15"
+MAINTAINENCE = "17"
 
 
 def version():
     """
     version prints version as a string
-
-    Odd number versions are releases.
-    Even number versions are testing builds between releases.
-
-    Used to set version in setup.py
-    and as an easy way to check which
-    version you have installed.
 
     """
     return f"{MAJOR}.{MINOR}.{MAINTAINENCE}"
@@ -37,61 +31,29 @@ def version():
 
 class GumD:
     """
-    GumD class is a multicast server instance
+    GumD class is the UDP Unicast/Multicast sender
     """
 
-    def __init__(self, addr=None, mttl=None, nethost=None):
-        self.ip, self.port = addr.rsplit(":", 1)
-        self.nethost = nethost
+    def __init__(self, addr=None, mttl=1, bind_addr="0.0.0.0:1025"):
+        self.dest_ip, self.dest_port = addr.rsplit(":", 1)
+        self.src_ip, self.src_port = bind_addr.rsplit(":", 1)
         self.ttl = mttl
-        self.mcast_grp = (self.ip, int(self.port))
+        self.dest_grp = (self.dest_ip, int(self.dest_port))
         self.dgram_size = 1316
-        self.sock = self.mk_sock()
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        self.sock.bind((self.src_ip, int(self.src_port)))
 
-    def mk_sock(self):
-        """
-        mk_sock , create a socket
-        """
-
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-        return sock
-
-    def sock4mcast(self):
-        """
-        sock4mcast tunes the socket for Multicast
-        """
-
-        self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.ttl)
-        if self.nethost == "0.0.0.0":
-            return
-        self.sock.setsockopt(
-            socket.IPPROTO_IP, socket.IP_MULTICAST_IF, socket.inet_aton(self.nethost)
+    def send_stream(self, vid, multicast=True):
+        proto = "udp://"
+        if multicast:
+            self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.ttl)
+            proto = proto + "@"
+        print(
+            f"Stream Uri: {proto}{self.dest_ip}:{self.dest_port} from source {self.src_ip}:{self.src_port}"
         )
-
-    def stream_mcast(self, vid):
-        """
-        stream_mcast streams each item on command line
-        """
-
-        self.sock4mcast()
-        iface = self.sock.getsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_IF, 4)
-        iface = f"{iface[0]}.{iface[1]}.{iface[2]}.{iface[3]}"
-        # print(socket.if_nameindex())
-        print(f"Multicast Stream Uri: udp://@{self.ip}:{self.port} on host:{iface}")
         with reader(vid) as gum:
             for chunk in iter(partial(gum.read, self.dgram_size), b""):
-                self.sock.sendto(chunk, self.mcast_grp)
-        self.sock.close()
-
-    def stream_udp(self, vid):
-        """
-        stream_udp reads a video and streams it via unicast UDP
-        """
-
-        print(f"UDP Stream Uri: udp://{self.ip}:{self.port}")
-        with reader(vid) as um:
-            for chunk in iter(partial(um.read, self.dgram_size), b""):
-                self.sock.sendto(chunk, (self.ip, int(self.port)))
+                self.sock.sendto(chunk, self.dest_grp)
         self.sock.close()
 
 
@@ -113,16 +75,26 @@ def parse_args():
     )
 
     parser.add_argument(
-        "-u",
-        "--udp",
-        help='Use Unicast Udp instead of Multicast and use this UDP Unicast address like "127.0.0.1:1234"',
+        "-a",
+        "--addr",
+        default=DEFAULT_MULTICAST,
+        help='Destination Address:Port like "227.1.3.10:4310"',
     )
 
     parser.add_argument(
-        "-n",
-        "--nethost",
-        default="0.0.0.0",
-        help='Multicast host ip like "127.0.0.1" or "192.168.1.34". Default is "0.0.0.0" (use default interface)',
+        "-u",
+        "--unicast",
+        action="store_const",
+        default=False,
+        const=True,
+        help='Use Unicast instead of Multicast',
+    )
+
+    parser.add_argument(
+        "-b",
+        "--bind_addr",
+        default="0.0.0.0:1025",
+        help='Local IP and Port to bind to like "192.168.1.34:5555". Default is "0.0.0.0:1025"',
     )
 
     parser.add_argument(
@@ -139,13 +111,6 @@ def parse_args():
         default=False,
         const=True,
         help="Show version",
-    )
-
-    parser.add_argument(
-        "-a",
-        "--addr",
-        default=DEFAULT_MCAST,
-        help='Multicast Address like "227.1.3.10:4310"',
     )
 
     return parser.parse_args()
@@ -172,23 +137,18 @@ def daemonize():
 
 def cli():
     """
-    usage: gumd [-h] [-i INPUT] [-u UDP] [-n NETHOST] [-t TTL] [-v] [-a ADDR]
+        usage: gumd.py [-h] [-i INPUT] [-a ADDR] [-u] [-b BIND_ADDR] [-t TTL] [-v]
 
-    options:
-      -h, --help            show this help message and exit
-
-      -i INPUT, --input INPUT
-                            like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or "https://futzu.com/xaa.ts"
-
-      -u UDP, --udp UDP     Use Unicast Udp instead of Multicast and use this UDP Unicast address like "127.0.0.1:1234"
-
-      -n NETHOST, --nethost NETHOST
-                            Multicast host ip like "127.0.0.1" or "192.168.1.34". Default is "0.0.0.0" (use default interface)
-      -t TTL, --ttl TTL     Multicast TTL 1 - 255
-
-      -v, --version         Show version
-
-      -a ADDR, --addr ADDR  Multicast Address like "227.1.3.10:4310"
+        optional arguments:
+          -h, --help            show this help message and exit
+          -i INPUT, --input INPUT
+                                like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or "https://futzu.com/xaa.ts"
+          -a ADDR, --addr ADDR  Destination Address:Port like "227.1.3.10:4310"
+          -u, --unicast         Use Unicast instead of Multicast
+          -b BIND_ADDR, --bind_addr BIND_ADDR
+                                Local IP and Port to bind to like "192.168.1.34:5555". Default is "0.0.0.0:1025"
+          -t TTL, --ttl TTL     Multicast TTL 1 - 255
+          -v, --version         Show version
     """
 
     args = parse_args()
@@ -196,13 +156,16 @@ def cli():
         print(version())
         sys.exit()
     daemonize()
-    if args.udp:
-        gummie = GumD(args.udp, None, None)
-        gummie.stream_udp(args.input)
+    ttl = int(args.ttl).to_bytes(1, byteorder="big")
+    dest_addr= args.addr
+    if args.unicast:
+        if dest_addr == DEFAULT_MULTICAST:
+            dest_addr = DEFAULT_UNICAST   
+    gummie = GumD(dest_addr, ttl, args.bind_addr)
+    if args.unicast:
+        gummie.send_stream(args.input, multicast=False)
     else:
-        ttl = int(args.ttl).to_bytes(1, byteorder="big")
-        gummie = GumD(args.addr, ttl, args.nethost)
-        gummie.stream_mcast(args.input)
+        gummie.send_stream(args.input, multicast=True)
     sys.exit()
 
 
