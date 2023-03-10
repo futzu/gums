@@ -8,7 +8,7 @@
 
 ---
 
-### Latest is `v.0.0.9`
+### Latest is `v.0.0.17`
 
 ![image](https://user-images.githubusercontent.com/52701496/223828007-7d5e0bbc-7a21-400a-8ea8-5eff9620bc5a.png)
 
@@ -24,9 +24,8 @@ python3 -mpip install gumd
 ### Use gumd (Daemon) programmatically
 ```py3
 >>>> from gumd import GumD
->>>> nethost = "1.2.3.4"         # local ip addr to use
->>>> gumd =GumD('235.35.3.5:3535',1, nethost)
->>>> gumd.mcast("/home/a/stuff")
+>>>> gumd =GumD('235.35.3.5:3535',ttl=1)
+>>>> gumd.send_stream("/home/a/stuff")
 stream uri: udp://@235.35.3.5:3535
 >>>>
 ```
@@ -94,19 +93,19 @@ install gumc /usr/local/bin  # or ~/.local/bin
      * reading from stdin `cat myvideo.ts | gumd`
 
 ```smalltalk
-usage: gumd [-h] [-i INPUT] [-a ADDR] [-t TTL] [-v]
+usage: gumd [-h] [-i INPUT] [-a ADDR] [-u] [-b BIND_ADDR] [-t TTL] [-v]
 
-    optional arguments:
-      -h, --help            show this help message and exit
-      -i INPUT, --input INPUT
-                            like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or
-                            "https://futzu.com/xaa.ts"
-      -a ADDR, --addr ADDR  like "227.1.3.10:4310"
-      -n NETHOST, --nethost NETHOST
-                            host ip like "127.0.0.1" or "192.168.1.34". Default is
-                            "0.0.0.0" (use default interface)
-      -t TTL, --ttl TTL     1 - 255
-      -v, --version         Show version
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or "https://futzu.com/xaa.ts"
+  -a ADDR, --addr ADDR  Destination Address:Port like "227.1.3.10:4310"
+  -u, --unicast         Use Unicast instead of Multicast
+  -b BIND_ADDR, --bind_addr BIND_ADDR
+                        Local IP and Port to bind to like "192.168.1.34:5555". Default is "0.0.0.0:1025"
+  -t TTL, --ttl TTL     Multicast TTL 1 - 255
+  -v, --version         Show version
+
 ```
 #### __start gumd (Daemon) cli__
 ```smalltalk
