@@ -2,10 +2,10 @@
 
 ~Sally in Salt Lake City
 
-#  gumd
+#  gums
 
 ---
-## `G`<I>rande</I> `U`<I>nicast</I> `M` <I>ulticast</I> `D` <I>aemon</I> 
+## `G`<I>rande</I> `U`<I>nicast</I> `M` <I>ulticast</I> `S` <I>ender</I> 
 
 
 ---
@@ -18,15 +18,15 @@
 
 ```smalltalk
 
-python3 -mpip install gumd
+python3 -mpip install gums
 
 ```
 
-### Use gumd (Daemon) programmatically
+### Use gums (Sender) programmatically
 ```py3
->>>> from gumd import GumD
->>>> gumd =GumD('235.35.3.5:3535',ttl=1)
->>>> gumd.send_stream("/home/a/stuff")
+>>>> from gums import GumS
+>>>> gums =GumS('235.35.3.5:3535',ttl=1)
+>>>> gums.send_stream("/home/a/stuff")
 stream uri: udp://@235.35.3.5:3535
 >>>>
 ```
@@ -40,61 +40,30 @@ b'Helloooo'
 
 ```
 ## Cli tools
-* The cli tools __gumd and gumc__ try to install to ~/.local/bin
+* The cli tools __gums and gumc__ try to install to ~/.local/bin
 * make sure ~/.local/bin is in your path I have this at the end my .bashrc 
 ```sh
 PLAN9=/home/a/plan9port export PLAN9
 PATH=/home/a/.local/bin:$PLAN9:$PATH export PATH
 ```
- if you dont get them installed, roll your own.
- 
-* __gumd__ _(Daemon)_
 
- ```lua
-
-   #!/usr/bin/env python3
-
-   from gumd import cli 
-
-   cli()
-```
-
-* __gumc__ _(Client)_
-
-```lua
-  #!/usr/bin/env python3
-
-  from gumc import cli 
-
-  cli()
-
-
-```
-#### Install cli tools
-```
-
-install gumd /usr/local/bin  # or ~/.local/bin
-install gumc /usr/local/bin  # or ~/.local/bin
-
-
-```
-#### __Use gumd (Daemon) cli__
+#### __Use gums (Sender) cli__
 
    * Supported input mpegts URIs:
    
      
-     * files  `gumd -i /home/me/vid.ts`
+     * files  `gums -i /home/me/vid.ts`
      
-     * http(s) `gumd -i https://futzu.com/xaa.ts`
+     * http(s) `gums -i https://futzu.com/xaa.ts`
      
-     * udp `gumd -i udp://127.0.0.1:4000`
+     * udp `gums -i udp://127.0.0.1:4000`
 
-     * multicast `gumd -i udp://@235.1.2.3:4567`
+     * multicast `gums -i udp://@235.1.2.3:4567`
      
-     * reading from stdin `cat myvideo.ts | gumd`
+     * reading from stdin `cat myvideo.ts | gums`
 
 ```smalltalk
-usage: gumd.py [-h] [-i INPUT] [-a ADDR] [-u] [-b BIND_ADDR] [-t TTL] [-v]
+usage: gums [-h] [-i INPUT] [-a ADDR] [-u] [-b BIND_ADDR] [-t TTL] [-v]
 
 optional arguments:
 
@@ -104,22 +73,22 @@ optional arguments:
                         like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or "https://futzu.com/xaa.ts"
                         
   -a ADDR, --addr ADDR  Destination IP:Port like "227.1.3.10:4310"
-  
-  -u, --unicast         Use Unicast instead of Multicast
-  
+    
   -b BIND_ADDR, --bind_addr BIND_ADDR
                         Local IP to bind to like "192.168.1.34". Default is 0.0.0.0
                         
   -t TTL, --ttl TTL     Multicast TTL 1 - 255
-  
+ 
+  -u, --unicast         Use Unicast instead of Multicast 
+
   -v, --version         Show version
 
 ```
-#### __start gumd (Daemon) cli__
+#### __start gums (Sender) cli__
 ```smalltalk
-a@debian:~/gumd$ gumd -i /home/a/abc.py 
+a@debian:~/gums$ gums -i /home/a/abc.py 
 stream uri: udp://@235.35.3.5:3535
-a@debian:~/gumd$ 
+a@debian:~/gums$ 
 ```
 #### __use gumc (Client) cli__
 ```lua
@@ -136,25 +105,25 @@ options:
 
 ### start gumc (Client) cli
 ```lua
-a@debian:~/build/clean/gumd$ gumc -i udp://@235.35.3.5:3535 -b 1024
+a@debian:~/build/clean/gums$ gumc -i udp://@235.35.3.5:3535 -b 1024
 
 ```
-### Test gumd and gumc together
+### Test gums and gumc together
 * first terminal, start the client, __gumc__
 ```lua
-a@debian:~/build/clean/gumd$ pypy3 gumc.py -b 5 -i udp://@235.35.3.5:3535
+a@debian:~/build/clean/gums$ pypy3 gumc.py -b 5 -i udp://@235.35.3.5:3535
 ```
-* second terminal,start the daemon, gumd__ and send a "hello"
+* second terminal,start the dender, gums__ and send a "hello"
 ```lua
-a@debian:~/build/clean/gumd$ printf 'hello' | gumd -a 235.35.3.5:3535
+a@debian:~/build/clean/gums$ printf 'hello' | gums -a 235.35.3.5:3535
 stream uri: udp://@235.35.3.5:3535
 ```
-### play gumd (Daemon) stream with ffplay
+### play gums (Sender) stream with ffplay
 
 ```smalltalk
 ffplay udp://@235.35.3.5:3535
 ```
-### segment stream from gumd  (Daemon) into hls with [x9k3](https://github.com/futzu/x9k3)
+### segment stream from gums  (Sender) into hls with [x9k3](https://github.com/futzu/x9k3)
 
 ```smalltalk
 pypy3 x9k3.py -i udp://@235.35.3.5:3535
@@ -173,15 +142,8 @@ pypy3 x9k3.py -i udp://@235.35.3.5:3535
 ___
 
 
-<details> <summary><h2> .</h2> </summary>
-
- Phase One: Expose the Pep Deep State
-</h2> </summary>
-  * [Phase One has begun](https://github.com/python/peps/compare/main...futzu:peps:main)
-  
-</details>
-
 
 ___
 
 ![image](https://user-images.githubusercontent.com/52701496/166299701-72ee908a-5053-45fc-a716-4b8ca4b1ef32.png)
+
