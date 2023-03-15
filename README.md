@@ -8,7 +8,7 @@
 
 ---
 
-### Latest is `v.0.0.17`
+### Latest is `v.0.0.21`
 
 
 
@@ -92,17 +92,24 @@ install gumc /usr/local/bin  # or ~/.local/bin
      * reading from stdin `cat myvideo.ts | gumd`
 
 ```smalltalk
-usage: gumd [-h] [-i INPUT] [-a ADDR] [-u] [-b BIND_ADDR] [-t TTL] [-v]
+usage: gumd.py [-h] [-i INPUT] [-a ADDR] [-u] [-b BIND_ADDR] [-t TTL] [-v]
 
 optional arguments:
+
   -h, --help            show this help message and exit
+  
   -i INPUT, --input INPUT
                         like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or "https://futzu.com/xaa.ts"
-  -a ADDR, --addr ADDR  Destination Address:Port like "227.1.3.10:4310"
+                        
+  -a ADDR, --addr ADDR  Destination IP:Port like "227.1.3.10:4310"
+  
   -u, --unicast         Use Unicast instead of Multicast
+  
   -b BIND_ADDR, --bind_addr BIND_ADDR
-                        Local IP and Port to bind to like "192.168.1.34:5555". Default is "0.0.0.0:1025"
+                        Local IP to bind to like "192.168.1.34". Default is 0.0.0.0
+                        
   -t TTL, --ttl TTL     Multicast TTL 1 - 255
+  
   -v, --version         Show version
 
 ```
