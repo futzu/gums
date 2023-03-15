@@ -1,6 +1,8 @@
-<I> "I've been googling for some time now, and still have yet to find a working example of Python multicast"</I>
+<I> "I've been googling for some time now, and still have yet to find a working example of Python multicast sender" </I>
 
-#  Behold gumd.
+~Sally in Salt Lake City
+
+#  gumd
 
 ---
 ## `G`<I>rande</I> `U`<I>nicast</I> `M` <I>ulticast</I> `D` <I>aemon</I> 
