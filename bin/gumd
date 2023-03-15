@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from gumd import cli 
+from gums import cli 
 
 cli()
 
