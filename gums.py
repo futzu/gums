@@ -17,11 +17,10 @@ from new_reader import reader
 DGRAM_SIZE = 1316
 
 DEFAULT_MULTICAST = "235.35.3.5:3535"
-DEFAULT_UNICAST = "127.0.0.1:3535"
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "23"
+MAINTAINENCE = "25"
 
 
 def version():
@@ -43,10 +42,24 @@ class GumS:
         self.src_port = 0
         self.ttl = mttl
         self.dest_grp = (self.dest_ip, int(self.dest_port))
-        self.sock = self._mk_sock()
+        self.sock = self.mk_sock()
         self.sock.bind((self.src_ip, self.src_port))
 
-    def _mk_sock(self):
+    def is_multicast(self):
+        """
+        is_multicast tests the first byte of an ipv4 address
+        to see if it is in the multicast range.
+        """
+        net_id = int(self.dest_ip.split(".", 1)[0])
+        if net_id in range(224, 240):
+            return True
+        return False
+
+    def mk_sock(self):
+        """
+        mk_sock makes a udp socket, self.sock
+        and sets a few opts.
+        """
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         if hasattr(socket, "SO_REUSEPORT"):
@@ -58,11 +71,15 @@ class GumS:
         iter_dgrams iterates over the video and sends
         self.dgram_size chunks of video to the socket.
         """
+        total_bytes=0
         with reader(vid) as gum:
             for dgram in iter(partial(gum.read, DGRAM_SIZE), b""):
                 self.sock.sendto(dgram, self.dest_grp)
+                total_bytes+=len(dgram)
+                print(f"\r{total_bytes} Bytes Sent",end="\r",file=sys.stderr)
+            print("\n", file=sys.stderr)
 
-    def send_stream(self, vid, multicast=True):
+    def send_stream(self, vid):
         """
         send_stream sets multicast ttl if needed,
         prints socket address info,
@@ -70,15 +87,15 @@ class GumS:
         and closes the socket
         """
         proto = "udp://"
-        if multicast:
+        pre = "Unicast"
+        if self.is_multicast():
             self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.ttl)
             proto = proto + "@"
-        else:
-            self.sock.setblocking(False)
+            pre = "Multicast"
         src_ip, src_port = self.sock.getsockname()
-        print(
-            f"\n\tStream: {proto}{self.dest_ip}:{self.dest_port}\n\tSource: {src_ip}:{src_port}\n"
-        )
+        print(f"\n\t{pre} Stream\n\t{proto}{self.dest_ip}:{self.dest_port}",file=sys.stderr)
+        print(f"\n\tSource\n\t{src_ip}:{src_port}\n",file=sys.stderr)
+
         self.iter_dgrams(vid)
         self.sock.close()
 
@@ -105,15 +122,6 @@ def parse_args():
         "--addr",
         default=DEFAULT_MULTICAST,
         help='Destination IP:Port like "227.1.3.10:4310"',
-    )
-
-    parser.add_argument(
-        "-u",
-        "--unicast",
-        action="store_const",
-        default=False,
-        const=True,
-        help="Use Unicast instead of Multicast",
     )
 
     parser.add_argument(
@@ -182,16 +190,11 @@ def cli():
     if args.version:
         print(version())
         sys.exit()
-    daemonize()
+  #  daemonize()
     ttl = int(args.ttl).to_bytes(1, byteorder="big")
-    multicast = True
     dest_addr = args.addr
-    if args.unicast:
-        multicast = False
-        if dest_addr == DEFAULT_MULTICAST:
-            dest_addr = DEFAULT_UNICAST
     gummie = GumS(dest_addr, ttl, args.bind_addr)
-    gummie.send_stream(args.input, multicast)
+    gummie.send_stream(args.input)
     sys.exit()
 
 
