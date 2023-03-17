@@ -24,27 +24,24 @@ python3 -mpip install gums
 
 ### Use gums (Sender) programmatically
 ```py3
+a@debian:~/gums$ pypy3
+Python 3.9.16 (7.3.11+dfsg-2, Feb 06 2023, 16:52:03)
+[PyPy 7.3.11 with GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
 >>>> from gums import GumS
->>>> gums =GumS('235.35.3.5:3535',ttl=1)
->>>> gums.send_stream("/home/a/stuff")
-stream uri: udp://@235.35.3.5:3535
->>>>
-```
-### Use gumc (Client) programmatically
-```py3
->>>> from gumc import GumC
->>>> gumc = GumC("udp://@235.35.3.5:3535")
->>>> data = gumc.read(8)
->>>> data
-b'Helloooo'
+>>>> gummie = GumS("235.35.3.5:3535")
+>>>> gummie.send_stream("/home/a/mpegts/pcrvid.ts")
 
-```
-## Cli tools
-* The cli tools __gums and gumc__ try to install to ~/.local/bin
-* make sure ~/.local/bin is in your path I have this at the end my .bashrc 
-```sh
-PLAN9=/home/a/plan9port export PLAN9
-PATH=/home/a/.local/bin:$PLAN9:$PATH export PATH
+	Multicast Stream
+	udp://@235.35.3.5:3535
+
+	Source
+	0.0.0.0:38835
+
+49636512 Bytes Sent
+
+>>>> 
+
 ```
 
 #### __Use gums (Sender) cli__
@@ -63,25 +60,26 @@ PATH=/home/a/.local/bin:$PLAN9:$PATH export PATH
      * reading from stdin `cat myvideo.ts | gums`
 
 ```smalltalk
-usage: gums [-h] [-i INPUT] [-a ADDR] [-u] [-b BIND_ADDR] [-t TTL] [-v]
+usage: gums [-h] [-i INPUT] [-a ADDR] [-b BIND_ADDR] [-t TTL] [-v]
 
 optional arguments:
+  -h, --help           Show this help message and exit
 
-  -h, --help            show this help message and exit
-  
-  -i INPUT, --input INPUT
-                        like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or "https://futzu.com/xaa.ts"
-                        
-  -a ADDR, --addr ADDR  Destination IP:Port like "227.1.3.10:4310"
-    
-  -b BIND_ADDR, --bind_addr BIND_ADDR
-                        Local IP to bind to like "192.168.1.34". Default is 0.0.0.0
-                        
-  -t TTL, --ttl TTL     Multicast TTL 1 - 255
- 
-  -u, --unicast         Use Unicast instead of Multicast 
+-i INPUT, --input INPUT
+                       Like "/home/a/vid.ts" or "udp://@235.35.3.5:3535" or "https://futzu.com/xaa.ts"
 
-  -v, --version         Show version
+-a ADDR, --addr ADDR     
+                       Destination IP:Port like "227.1.3.10:4310"
+
+-b BIND_ADDR, --bind_addr BIND_ADDR
+                        
+                       Local IP to bind to like "192.168.1.34". Default is 0.0.0.0
+
+-t TTL, --ttl TTL       
+                       Multicast TTL 1 - 255
+
+-v, --version          
+                       Show version
 
 ```
 #### __start gums (Sender) cli__
@@ -113,22 +111,11 @@ a@debian:~/build/clean/gums$ gumc -i udp://@235.35.3.5:3535 -b 1024
 ```lua
 a@debian:~/build/clean/gums$ pypy3 gumc.py -b 5 -i udp://@235.35.3.5:3535
 ```
-* second terminal,start the dender, gums__ and send a "hello"
+* second terminal,start the sender, gums__ and send a "hello"
 ```lua
 a@debian:~/build/clean/gums$ printf 'hello' | gums -a 235.35.3.5:3535
 stream uri: udp://@235.35.3.5:3535
 ```
-### play gums (Sender) stream with ffplay
-
-```smalltalk
-ffplay udp://@235.35.3.5:3535
-```
-### segment stream from gums  (Sender) into hls with [x9k3](https://github.com/futzu/x9k3)
-
-```smalltalk
-pypy3 x9k3.py -i udp://@235.35.3.5:3535
-```
-     
 ### read 13 bytes from a multicast stream with gumc (Client)
  ```lua
  gumc -i udp://@235.35.3.5:3535 -b 13
