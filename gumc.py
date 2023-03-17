@@ -52,7 +52,7 @@ class GumC:
         GumC.read reads num_bites and returns them
         """
         return self.rdr.read(num_bites)
-        
+
 
 def parse_args():
     """
@@ -112,6 +112,6 @@ def cli():
     gumc =GumC(args.instuff)
     print(gumc.read(args.bytesize))
 
-    
+
 if __name__ == '__main__':
     cli()
