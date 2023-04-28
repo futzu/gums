@@ -1,5 +1,5 @@
 <I> "I've been googling for some time now, and still have yet to find a working example of Python multicast sender... 
-<b>until I found gums</b>" </I>   ~Sally in Salt Lake City
+" </I>  <b> ~Sally in Salt Lake City</b>
 
 #  gums
 
