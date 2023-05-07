@@ -9,8 +9,9 @@
 
 ---
 
-### Latest is `v.0.0.27`
-
+### Latest is `v.0.0.29`
+* Now with realtime bit rate calculation.
+![image](https://user-images.githubusercontent.com/52701496/236688967-196dc21c-0f8a-4ed1-8d04-50adf2014f37.png)
 
 
 * __Install__
