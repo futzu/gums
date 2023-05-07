@@ -10,6 +10,7 @@ import argparse
 import os
 import socket
 import sys
+import time
 from functools import partial
 from new_reader import reader
 
@@ -20,7 +21,7 @@ DEFAULT_MULTICAST = "235.35.3.5:3535"
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "27"
+MAINTAINENCE = "29"
 
 
 def version():
@@ -71,12 +72,21 @@ class GumS:
         iter_dgrams iterates over the video and sends
         self.dgram_size chunks of video to the socket.
         """
-        total_bytes=0
+        million = 1024 * 1024
+        start_time = time.time()
+        now = time.time
+        total_bytes = 0
         with reader(vid) as gum:
             for dgram in iter(partial(gum.read, DGRAM_SIZE), b""):
                 self.sock.sendto(dgram, self.dest_grp)
-                total_bytes+=len(dgram)
-                print(f"\r{total_bytes} Bytes Sent",end="\r",file=sys.stderr)
+                total_bytes += len(dgram)
+                elapsed = now() - start_time
+                rate = (total_bytes / million) / elapsed
+                print(
+                    f"\t{total_bytes/million:0.2f} MB sent in {elapsed:5.2f} seconds. {rate:3.2f} MB/Sec",
+                    end="\r",
+                    file=sys.stderr,
+                )
             print("\n", file=sys.stderr)
 
     def send_stream(self, vid):
@@ -93,8 +103,11 @@ class GumS:
             proto = proto + "@"
             pre = "Multicast"
         src_ip, src_port = self.sock.getsockname()
-        print(f"\n\t{pre} Stream\n\t{proto}{self.dest_ip}:{self.dest_port}",file=sys.stderr)
-        print(f"\n\tSource\n\t{src_ip}:{src_port}\n",file=sys.stderr)
+        print(
+            f"\n\t{pre} Stream\n\t{proto}{self.dest_ip}:{self.dest_port}",
+            file=sys.stderr,
+        )
+        print(f"\n\tSource\n\t{src_ip}:{src_port}\n", file=sys.stderr)
 
         self.iter_dgrams(vid)
         self.sock.close()
@@ -190,7 +203,7 @@ def cli():
     if args.version:
         print(version())
         sys.exit()
-  #  daemonize()
+    #  daemonize()
     ttl = int(args.ttl).to_bytes(1, byteorder="big")
     dest_addr = args.addr
     gummie = GumS(dest_addr, ttl, args.bind_addr)
