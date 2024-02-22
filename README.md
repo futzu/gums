@@ -11,7 +11,9 @@
 
 ### Latest is `v.0.0.29`
 * Now with realtime bit rate calculation.
-![image](https://user-images.githubusercontent.com/52701496/236688967-196dc21c-0f8a-4ed1-8d04-50adf2014f37.png)
+  ![image](https://github.com/futzu/gums/assets/52701496/a51bad5f-d6b4-4655-a332-e90d16d43e7f)
+
+
 
 
 * __Install__
@@ -84,7 +86,7 @@ optional arguments:
 ```
 #### __start gums (Sender) cli__
 ```smalltalk
-a@debian:~/gums$ gums -i /home/a/abc.py 
+a@debian:~/gums$ gums -i any.file 
 stream uri: udp://@235.35.3.5:3535
 a@debian:~/gums$ 
 ```
