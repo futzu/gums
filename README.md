@@ -11,7 +11,9 @@
 
 ### Latest is `v.0.0.29`
 * Now with realtime bit rate calculation.
-  ![image](https://github.com/futzu/gums/assets/52701496/a51bad5f-d6b4-4655-a332-e90d16d43e7f)
+
+* ![image](https://github.com/futzu/gums/assets/52701496/f8bfad92-2e1e-47c1-a5b2-53e5d3152e0f)
+
 
 
 
