@@ -18,8 +18,8 @@ setuptools.setup(
     install_requires=[
         "new_reader >=0.1.9",
     ],
-    py_modules=["gumd","gumc","gums"],
-    scripts=['bin/gums','bin/gumd', 'bin/gumc'],
+    py_modules=["gums","gumc"],
+    scripts=['bin/gums', 'bin/gumc'],
     platforms="all",
     classifiers=[
         "License :: OSI Approved :: MIT License",
