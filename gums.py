@@ -21,7 +21,7 @@ DEFAULT_MULTICAST = "235.35.3.5:3535"
 
 MAJOR = "0"
 MINOR = "0"
-MAINTAINENCE = "29"
+MAINTAINENCE = "31"
 
 
 def version():
