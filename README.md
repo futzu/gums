@@ -101,7 +101,7 @@ options:
   -i INSTUFF, --instuff INSTUFF
                         default is 'udp://@235.35.3.5:3535'
   -b BYTESIZE, --bytesize BYTESIZE
-                        Number of bytes to read. default is 1
+                        Number of bytes to read. default is to read all.
   -v, --version         Show version
 ```
 
@@ -120,6 +120,10 @@ a@debian:~/build/clean/gums$ pypy3 gumc.py -b 5 -i udp://@235.35.3.5:3535
 a@debian:~/build/clean/gums$ printf 'hello' | gums -a 235.35.3.5:3535
 stream uri: udp://@235.35.3.5:3535
 ```
+### read all bytes from  multicast stream and write to file with gumc (Client)
+```lua
+gumc -i udp://@235.35.3.5:3535 -o output.ts
+	
 ### read 13 bytes from a multicast stream with gumc (Client)
  ```lua
  gumc -i udp://@235.35.3.5:3535 -b 13
@@ -128,8 +132,7 @@ stream uri: udp://@235.35.3.5:3535
  ```lua
   gumc -i udp://@235.35.3.5:3535 -b 10000
 ```
-#### Note: a multicast client works a little differently than most people expect.
-#### You must specify a size to read or the client will never return.
+
 ___
 
 
