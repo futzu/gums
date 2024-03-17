@@ -1,19 +1,14 @@
-<I> "I've been googling for some time now, and still have yet to find a working example of Python multicast sender... 
-" </I>  <b> ~Sally in Salt Lake City</b>
-
-#  gums
-
----
-## `G`<I>rande</I> `U`<I>nicast</I> `M` <I>ulticast</I> `S` <I>ender</I> 
+# `G`<I>rande</I> `U`<I>nicast</I> `M` <I>ulticast</I> `S` <I>ender</I> 
 
 
+###  `gums` is multicast that just works, right out of the box.
 ---
 
-### Latest is `v.0`.`0`.`31`
-* Now with realtime bit rate calculation.
+## gums is designed for multicast mpegts video, but works with any multicast stream.
+
+### Latest is v.`0`.`0`.`31`
 
  ![image](https://github.com/futzu/gums/assets/52701496/f8bfad92-2e1e-47c1-a5b2-53e5d3152e0f)
-
 
 
 
@@ -25,6 +20,9 @@
 python3 -mpip install gums
 
 ```
+
+
+
 
 ### Use gums (Sender) programmatically
 ```py3
@@ -48,11 +46,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ```
 
-#### __Use gums (Sender) cli__
+## __gums (Sender) cli__
 
    * Supported input mpegts URIs:
    
-     
      * files  `gums -i /home/me/vid.ts`
      
      * http(s) `gums -i https://futzu.com/xaa.ts`
@@ -92,7 +89,7 @@ a@debian:~/gums$ gums -i any.file
 stream uri: udp://@235.35.3.5:3535
 a@debian:~/gums$ 
 ```
-#### __use gumc (Client) cli__
+## __gumc (Client) cli__
 ```lua
 usage: gumc [-h] [-i INSTUFF] [-b BYTESIZE] [-v]
 
@@ -113,7 +110,7 @@ a@debian:~/build/clean/gums$ gumc -i udp://@235.35.3.5:3535 -b 1024
 ### Test gums and gumc together
 * first terminal, start the client, __gumc__
 ```lua
-a@debian:~/build/clean/gums$ pypy3 gumc.py -b 5 -i udp://@235.35.3.5:3535
+a@debian:~/build/clean/gums$  gumc -b 5 -i udp://@235.35.3.5:3535
 ```
 * second terminal,start the sender, gums__ and send a "hello"
 ```lua
