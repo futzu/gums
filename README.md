@@ -9,7 +9,7 @@
 
 ---
 
-### Latest is `v.0.0.29`
+### Latest is `v.0`.`0`.`31`
 * Now with realtime bit rate calculation.
 
  ![image](https://github.com/futzu/gums/assets/52701496/f8bfad92-2e1e-47c1-a5b2-53e5d3152e0f)
