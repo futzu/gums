@@ -16,7 +16,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/futzu/gums",
     install_requires=[
-        "new_reader >=0.1.07",
+        "new_reader >=0.1.9",
     ],
     py_modules=["gumd","gumc","gums"],
     scripts=['bin/gums','bin/gumd', 'bin/gumc'],
