@@ -120,7 +120,7 @@ stream uri: udp://@235.35.3.5:3535
 ### read all bytes from  multicast stream and write to file with gumc (Client)
 ```lua
 gumc -i udp://@235.35.3.5:3535 -o output.ts
-	
+```
 ### read 13 bytes from a multicast stream with gumc (Client)
  ```lua
  gumc -i udp://@235.35.3.5:3535 -b 13
