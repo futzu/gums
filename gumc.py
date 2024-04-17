@@ -14,6 +14,9 @@ import time
 from new_reader import reader
 
 MILLION = 1024 << 10
+DGRAM_SIZE = 1316
+INSTUFF = "udp://@235.35.3.5:3535"
+OUTSTUFF = sys.stdout.buffer
 
 MAJOR = "0"
 MINOR = "0"
@@ -42,18 +45,13 @@ class GumC:
 
     """
 
-    def __init__(
-        self,
-        instuff="udp://@235.35.3.5:3535",
-        outstuff=sys.stdout.buffer,
-        bytesize=None,
-    ):
-        self.instuff = instuff
-        self.outstuff = outstuff
-        if outstuff != sys.stdout.buffer:
+    def __init__(self, args):
+        self.instuff = args.instuff
+        self.outstuff = args.outstuff
+        if self.outstuff != OUTSTUFF:
             self.outstuff = open(self.outstuff, "wb")
         self.rdr = reader(self.instuff)
-        self.bytesize = bytesize
+        self.bytesize = args.bytesize
         self.total_bytes = 0
         self.start_time = None
 
@@ -63,7 +61,7 @@ class GumC:
         is larger than self.bytesize.
         """
         if self.bytesize is not None:
-            if self.total_bytes >= self.bytesize:
+            if self.total_bytes >= int(self.bytesize):
                 sys.exit()
 
     def elapsed(self):
@@ -72,15 +70,15 @@ class GumC:
         """
         return time.time() - self.start_time
 
-    def read(self, num_bites):
+    def read(self, num_bites=DGRAM_SIZE):
         """
         read reads num_bites and returns them
         """
-        data = None
+        data = b""
         try:
             data = self.rdr.read(num_bites)
         except:
-            sys.stderr.write("Timeout on the socket, no more data available.\n")
+            sys.stderr.write("\n\nTimeout on the socket, no more data available.\n")
             sys.exit()
         return data
 
@@ -90,11 +88,9 @@ class GumC:
         """
         elapsed = self.elapsed()
         rate = (self.total_bytes / MILLION) / elapsed
-        print(
-            f"\t{self.total_bytes/MILLION:0.2f} MB received in {elapsed:5.2f} seconds. {rate:3.2f} MB/Sec",
-            end="\r",
-            file=sys.stderr,
-        )
+        one = f"\t{self.total_bytes/MILLION:0.2f} MB received in "
+        two = f"{elapsed:5.2f} seconds. {rate:3.2f} MB/Sec"
+        print(one,two,end="\r",file=sys.stderr)
 
     def started(self):
         """
@@ -108,10 +104,11 @@ class GumC:
         write writes to outstuff
         """
         self.outstuff.write(chunk)
+        self.outstuff.flush()
         self.total_bytes += len(chunk)
 
 
-def parse_args():
+def argue():
     """
     parse_args parse command line args
     """
@@ -120,7 +117,7 @@ def parse_args():
     parser.add_argument(
         "-i",
         "--instuff",
-        default="udp://@235.35.3.5:3535",
+        default=INSTUFF,
         help="Input, default is 'udp://@235.35.3.5:3535' ",
     )
 
@@ -135,7 +132,7 @@ def parse_args():
     parser.add_argument(
         "-o",
         "--outstuff",
-        default=sys.stdout.buffer,
+        default=OUTSTUFF,
         help="Output, default is sys.stdout.buffer(for piping)",
     )
 
@@ -149,6 +146,27 @@ def parse_args():
     )
 
     return parser.parse_args()
+
+
+def show_version(args):
+    """
+    show_version shows version
+    if flag is set
+    """
+    if args.version:
+        print(version())
+        sys.exit()
+
+
+def mk_chunksize(args):
+    """
+    mk_chunksize calculates read size 
+    """
+    chunksize = DGRAM_SIZE
+    if args.bytesize:
+        if args.bytesize < chunksize:
+            chunksize = args.bytesize
+    return chunksize
 
 
 def cli():
@@ -169,13 +187,12 @@ def cli():
 
 
     """
-    args = parse_args()
-    if args.version:
-        print(version())
-        sys.exit()
-    gumc = GumC(instuff=args.instuff, outstuff=args.outstuff, bytesize=args.bytesize)
-    while gumc.instuff:
-        chunk = gumc.read(1316)
+    args = argue()
+    show_version(args)
+    gumc = GumC(args)
+    chunksize = mk_chunksize(args)
+    while True:
+        chunk = gumc.read(chunksize)
         gumc.started()
         gumc.write(chunk)
         gumc.show_rate()
